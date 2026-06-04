@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earnings Calendar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;color:#1a2332;min-height:100vh}
+
+.page-header{background:linear-gradient(135deg,#1a2332 0%,#243447 100%);color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.page-header h1{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em}
+.updated-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 14px;font-size:0.75rem;color:#cbd5e1;white-space:nowrap;flex-shrink:0}
+
+.main{max-width:1400px;margin:0 auto;padding:24px 20px}
+
+/* Three-panel grid */
+.panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:24px;align-items:start}
+
+.panel{background:white;border-radius:12px;border:1px solid #e8edf2;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.panel-header{padding:11px 16px;border-bottom:1px solid #e8edf2}
+.panel-label{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:5px;display:inline-block}
+.panel-label.holdings{background:#dbeafe;color:#1d4ed8}
+.panel-label.bullpen{background:#fce7f3;color:#be185d}
+.panel-label.watchlist{background:#f1f5f9;color:#475569}
+
+/* Entry cards */
+.entry{padding:13px 16px;border-bottom:1px solid #f1f5f9}
+.entry:last-child{border-bottom:none}
+.entry-ticker{font-weight:800;font-size:1rem;letter-spacing:0.01em;color:#1a2332}
+.entry-company{font-size:0.72rem;color:#64748b;margin-top:1px;margin-bottom:9px}
+.entry-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px}
+.entry-date{font-weight:600;font-size:0.85rem;color:#1a2332;white-space:nowrap}
+.entry-time{font-size:0.8rem;color:#475569;white-space:nowrap}
+.sess{display:inline-block;padding:2px 7px;border-radius:5px;font-size:0.65rem;font-weight:700;letter-spacing:0.02em;white-space:nowrap}
+.sess.bmo{background:#e0f2fe;color:#0369a1}
+.sess.amc{background:#ede9fe;color:#6d28d9}
+.entry-notes{font-size:0.7rem;color:#64748b;line-height:1.45}
+
+.empty-panel{padding:22px 16px;text-align:center;font-size:0.78rem;color:#94a3b8;font-style:italic}
+
+/* Not Announced section */
+.na-section{background:white;border-radius:12px;border:1px solid #e8edf2;box-shadow:0 1px 3px rgba(0,0,0,0.07);overflow:hidden}
+.na-header{padding:11px 20px;border-bottom:1px solid #f1f5f9;font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8}
+.na-grid{display:flex;flex-wrap:wrap;gap:8px;padding:16px 20px}
+.na-chip{background:#f8fafc;border:1px solid #e8edf2;border-radius:8px;padding:8px 12px;min-width:78px}
+.na-chip .sym{font-weight:800;font-size:0.85rem;color:#475569}
+.na-chip .co{font-size:0.65rem;color:#94a3b8;margin-top:2px}
+.na-chip .cat{font-size:0.6rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-top:3px}
+.na-chip .cat.h{color:#93c5fd}
+.na-chip .cat.w{color:#94a3b8}
+.na-chip .cat.b{color:#f9a8d4}
+
+.footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:32px;line-height:1.6}
+.footer a{color:#2563eb;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+@media(max-width:900px){
+  .panels{grid-template-columns:1fr}
+  .page-header{padding:16px}
+  .main{padding:16px 12px}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Earnings Calendar</h1>
+  <div id="updatedBadge" class="updated-badge">Updated: June 4, 2026</div>
+</div>
+
+<div class="main">
+
+  <div class="panels">
+
+    <!-- HOLDINGS -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-label holdings">Holdings</span></div>
+      <div id="holdingsBody"></div>
+    </div>
+
+    <!-- WATCHLIST -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-label watchlist">Watchlist</span></div>
+      <div id="watchlistBody"></div>
+    </div>
+
+    <!-- BULLPEN -->
+    <div class="panel">
+      <div class="panel-header"><span class="panel-label bullpen">Zane's Bullpen</span></div>
+      <div id="bullpenBody"></div>
+    </div>
+
+  </div>
+
+  <!-- NOT ANNOUNCED -->
+  <div class="na-section">
+    <div class="na-header">Not Announced</div>
+    <div class="na-grid" id="naGrid"></div>
+  </div>
+
+  <div class="footer">
+    <strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.<br>
+    <strong>How to share:</strong> Upload this file to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a> for a free permanent URL — no account needed.
+  </div>
+
+</div>
+
+<script>
+const EARNINGS = [
+  // ── HOLDINGS ──
+  { cat:'holdings', ticker:'TXN', co:'Texas Instruments',   date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed',     notes:'Source: TI press release June 2, 2026' },
+  { cat:'holdings', ticker:'TMO', co:'Thermo Fisher',        date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'GGG', co:'Graco',                date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'GOOG',co:'Alphabet',             date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'MSFT',co:'Microsoft',            date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'META',co:'Meta Platforms',       date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'AAPL',co:'Apple',                date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'AMZN',co:'Amazon',               date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'RKT', co:'Rocket Companies',     date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'SBUX',co:'Starbucks',            date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'HEI', co:'HEICO Corporation',    date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'CPRT',co:'Copart',               date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'COST',co:'Costco Wholesale',     date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+
+  // ── BULLPEN ──
+  { cat:'bullpen',  ticker:'TSLA',co:'Tesla',                date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen',  ticker:'UBER',co:'Uber Technologies',    date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen',  ticker:'QXO', co:'QXO Inc',              date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen',  ticker:'DASH',co:'DoorDash',             date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen',  ticker:'MELI',co:'MercadoLibre',         date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+
+  // ── WATCHLIST ──
+  { cat:'watchlist',ticker:'JPM', co:'JPMorgan Chase',       date:'2026-07-14', timeCT:'7:30 AM', sess:'BMO', status:'confirmed',     notes:'Source: JPMorgan Chase IR press release May 2025' },
+  { cat:'watchlist',ticker:'NFLX',co:'Netflix',              date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist',ticker:'SCHW',co:'Charles Schwab',       date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist',ticker:'AXP', co:'American Express',     date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', status:'confirmed',     notes:'Source: AXP IR press release Dec 2025' },
+  { cat:'watchlist',ticker:'ORLY',co:"O'Reilly Automotive", date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist',ticker:'BKNG',co:'Booking Holdings',     date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist',ticker:'ABNB',co:'Airbnb',               date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist',ticker:'WMT', co:'Walmart',              date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+];
+
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const STALE = new Date(TODAY.getTime() - 14*24*60*60*1000);
+
+function parseDate(d) {
+  if (!d) return null;
+  const [y,m,day] = d.split('-').map(Number);
+  return new Date(y,m-1,day);
+}
+
+function sessHtml(s) {
+  if (s==='BMO') return '<span class="sess bmo">Before Open</span>';
+  if (s==='AMC') return '<span class="sess amc">After Close</span>';
+  return '';
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+
+const catLabels = { holdings:'h', watchlist:'w', bullpen:'b' };
+const catNames  = { holdings:'Holdings', watchlist:'Watchlist', bullpen:'Bullpen' };
+
+function buildPanel(cat) {
+  const confirmed = EARNINGS.filter(e => e.cat === cat && e.status === 'confirmed');
+  confirmed.sort((a,b) => parseDate(a.date) - parseDate(b.date));
+
+  // Filter stale
+  const visible = confirmed.filter(e => {
+    const dt = parseDate(e.date);
+    return !dt || dt >= STALE;
+  });
+
+  if (visible.length === 0) {
+    return '<div class="empty-panel">No confirmed dates yet</div>';
+  }
+
+  return visible.map(e => {
+    const dt = parseDate(e.date);
+    return `<div class="entry">
+      <div class="entry-ticker">${e.ticker}</div>
+      <div class="entry-company">${e.co}</div>
+      <div class="entry-row">
+        <span class="entry-date">${fmtDate(dt)}</span>
+        <span class="entry-time">${e.timeCT} CT</span>
+        ${sessHtml(e.sess)}
+      </div>
+      ${e.notes ? `<div class="entry-notes">${e.notes}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function buildNA() {
+  // All not-announced, grouped: holdings first, then watchlist, then bullpen
+  const order = ['holdings','watchlist','bullpen'];
+  const chips = [];
+  order.forEach(cat => {
+    EARNINGS
+      .filter(e => e.cat === cat && e.status === 'not-announced')
+      .sort((a,b) => a.ticker.localeCompare(b.ticker))
+      .forEach(e => {
+        chips.push(`<div class="na-chip">
+          <div class="sym">${e.ticker}</div>
+          <div class="co">${e.co}</div>
+          <div class="cat ${catLabels[cat]}">${catNames[cat]}</div>
+        </div>`);
+      });
+  });
+  return chips.join('');
+}
+
+document.getElementById('holdingsBody').innerHTML  = buildPanel('holdings');
+document.getElementById('watchlistBody').innerHTML = buildPanel('watchlist');
+document.getElementById('bullpenBody').innerHTML   = buildPanel('bullpen');
+document.getElementById('naGrid').innerHTML        = buildNA();
+
+const now = new Date();
+document.getElementById('updatedBadge').textContent = 'Updated: ' + now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+</script>
+</body>
+</html>
