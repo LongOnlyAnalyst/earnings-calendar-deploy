@@ -60,37 +60,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <script>
 const EARNINGS = [
-  // Holdings (13)
-  {ticker:'TXN',  co:'Texas Instruments',       cat:'holdings', status:'confirmed',     date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', notes:'Source: PR Newswire (CFO Transition Release), June 2, 2026'},
-  {ticker:'TMO',  co:'Thermo Fisher Scientific', cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'GGG',  co:'Graco',                   cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'GOOG', co:'Alphabet',                cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'MSFT', co:'Microsoft',               cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'META', co:'Meta Platforms',          cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'AAPL', co:'Apple',                   cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'AMZN', co:'Amazon',                  cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'RKT',  co:'Rocket Companies',        cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'CPRT', co:'Copart',                  cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'COST', co:'Costco',                  cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'HEI',  co:'HEICO',                   cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'SBUX', co:'Starbucks',               cat:'holdings', status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  // Bullpen (6)
-  {ticker:'ADBE', co:'Adobe',                   cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'TSLA', co:'Tesla',                   cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'UBER', co:'Uber',                    cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'QXO',  co:'QXO',                     cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'DASH', co:'DoorDash',                cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'MELI', co:'MercadoLibre',            cat:'bullpen',  status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  // Watchlist (8)
-  {ticker:'JPM',  co:'JPMorganChase',           cat:'watchlist',status:'confirmed',     date:'2026-07-14', timeCT:'7:30 AM', sess:'BMO', notes:'Source: jpmorganchase.com, May 21, 2025'},
-  {ticker:'NFLX', co:'Netflix',                 cat:'watchlist',status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'SCHW', co:'Charles Schwab',          cat:'watchlist',status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'AXP',  co:'American Express',        cat:'watchlist',status:'confirmed',     date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', notes:'Source: ir.americanexpress.com, December 19, 2025'},
-  {ticker:'ORLY', co:"O'Reilly Automotive",     cat:'watchlist',status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'BKNG', co:'Booking Holdings',        cat:'watchlist',status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'ABNB', co:'Airbnb',                  cat:'watchlist',status:'not-announced', date:'', timeCT:'', sess:'', notes:''},
-  {ticker:'WMT',  co:'Walmart',                 cat:'watchlist',status:'confirmed',     date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', notes:'Source: corporate.walmart.com, March 5, 2026'},
+  // Holdings
+  { cat:'holdings', ticker:'TXN',  co:'Texas Instruments',       date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed',     notes:'Source: PRNewswire (TI CFO transition release), June 2, 2026' },
+  { cat:'holdings', ticker:'TMO',  co:'Thermo Fisher Scientific', date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'GGG',  co:'Graco',                    date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'GOOG', co:'Alphabet',                 date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'MSFT', co:'Microsoft',                date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'META', co:'Meta Platforms',           date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'AAPL', co:'Apple',                    date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'AMZN', co:'Amazon',                   date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'RKT',  co:'Rocket Companies',         date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'CPRT', co:'Copart',                   date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'COST', co:'Costco',                   date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'HEI',  co:'HEICO',                    date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'holdings', ticker:'SBUX', co:'Starbucks',                date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  // Bullpen
+  { cat:'bullpen',  ticker:'ADBE', co:'Adobe',                    date:'2026-06-11', timeCT:'4:00 PM', sess:'AMC', status:'confirmed',     notes:'Source: Adobe IR (events-presentations.html), June 15, 2026' },
+  { cat:'bullpen',  ticker:'TSLA', co:'Tesla',                    date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'bullpen',  ticker:'UBER', co:'Uber',                     date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'bullpen',  ticker:'QXO',  co:'QXO',                      date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'bullpen',  ticker:'DASH', co:'DoorDash',                 date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'bullpen',  ticker:'MELI', co:'MercadoLibre',             date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  // Watchlist
+  { cat:'watchlist', ticker:'JPM',  co:'JPMorgan Chase',          date:'2026-07-14', timeCT:'7:30 AM', sess:'BMO', status:'confirmed',     notes:'Source: JPMorganChase IR press release, May 21, 2025' },
+  { cat:'watchlist', ticker:'NFLX', co:'Netflix',                 date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'watchlist', ticker:'SCHW', co:'Charles Schwab',          date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'watchlist', ticker:'AXP',  co:'American Express',        date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', status:'confirmed',     notes:'Source: American Express IR press release, December 19, 2025' },
+  { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Automotive",     date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'watchlist', ticker:'BKNG', co:'Booking Holdings',        date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'watchlist', ticker:'ABNB', co:'Airbnb',                  date:'',           timeCT:'',        sess:'',   status:'not-announced',  notes:'' },
+  { cat:'watchlist', ticker:'WMT',  co:'Walmart',                 date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', status:'confirmed',     notes:'Source: Walmart corporate events page (fy2027-q2-earnings-release), June 15, 2026' },
 ];
+
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
 function parseDate(d){if(!d)return null;const[y,m,day]=d.split('-').map(Number);return new Date(y,m-1,day);}
