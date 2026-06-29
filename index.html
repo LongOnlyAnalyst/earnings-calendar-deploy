@@ -106,7 +106,7 @@ function buildPanel(cat){
 }
 function buildNA(){
   const order=['holdings','watchlist','bullpen'];
-  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&e.status==='not-announced').sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
+  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&(e.status==='not-announced'||(e.status==='confirmed'&&isStale(parseDate(e.date))))).sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
 }
 document.getElementById('holdingsBody').innerHTML=buildPanel('holdings');
 document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
