@@ -9,7 +9,9 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;color:#1a2332;min-height:100vh}
 .page-header{background:linear-gradient(135deg,#1a2332 0%,#243447 100%);color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .page-header h1{font-size:1.4rem;font-weight:700;letter-spacing:-0.01em}
-.updated-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 14px;font-size:0.75rem;color:#cbd5e1;white-space:nowrap;flex-shrink:0}
+.updated-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:6px 14px;font-size:0.75rem;color:#cbd5e1;white-space:nowrap;flex-shrink:0;text-align:right;line-height:1.5}
+.updated-badge .updated-sub{display:block;font-size:0.66rem;color:#94a3b8;margin-top:1px}
+.new-badge{display:inline-flex;align-items:center;background:#dcfce7;color:#166534;font-size:0.6rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;padding:2px 6px;border-radius:8px;margin-left:6px;vertical-align:middle}
 .main{max-width:1400px;margin:0 auto;padding:24px 20px}
 .panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:24px;align-items:start}
 .panel{background:white;border-radius:12px;border:1px solid #e8edf2;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
@@ -52,7 +54,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="main">
   <div class="panels">
     <div class="panel"><div class="panel-header"><span class="panel-label holdings">Holdings</span></div><div id="holdingsBody"></div></div>
-    <div class="panel"><div class="panel-header"><span class="panel-label watchlist">Watchlist</span></div><div id="watchlistBody"></div></div>
+    <div class="panel"><div class="panel-header"><span class="panel-label watchlist">Bullpen</span></div><div id="watchlistBody"></div></div>
     <div class="panel"><div class="panel-header"><span class="panel-label bullpen">Zane's Bullpen</span></div><div id="bullpenBody"></div></div>
   </div>
   <div class="na-section"><div class="na-header">Not Announced</div><div class="na-grid" id="naGrid"></div></div>
@@ -62,8 +64,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 const EARNINGS = [
   // HOLDINGS
   { cat:'holdings', ticker:'TXN', co:'Texas Instruments', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: prnewswire.com / investor.ti.com (CFO transition press release), June 2, 2026' },
-  { cat:'holdings', ticker:'TMO', co:'Thermo Fisher Scientific', date:'2026-07-23', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: Thermo Fisher Scientific press release (BusinessWire/ir.thermofisher.com), July 1, 2026' },
-  { cat:'holdings', ticker:'GGG', co:'Graco', date:'2026-07-22', timeCT:'3:00 PM', sess:'AMC', status:'confirmed', notes:'Source: Graco Inc. press release (businesswire.com), July 1, 2026 — results released after NYSE close; conference call July 23, 10:00 AM CT' },
+  { cat:'holdings', ticker:'TMO', co:'Thermo Fisher Scientific', date:'2026-07-23', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: Thermo Fisher Scientific press release (BusinessWire/ir.thermofisher.com), July 1, 2026', isNew:true },
+  { cat:'holdings', ticker:'GGG', co:'Graco', date:'2026-07-23', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after NYSE close on July 22. Source: Graco Inc. press release (businesswire.com), July 1, 2026', isNew:true },
   { cat:'holdings', ticker:'GOOG', co:'Alphabet', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'MSFT', co:'Microsoft', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'META', co:'Meta Platforms', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
@@ -85,11 +87,12 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'NFLX', co:'Netflix', date:'2026-07-16', timeCT:'3:45 PM', sess:'AMC', status:'confirmed', notes:'Source: ir.netflix.net, June 15, 2026' },
   { cat:'watchlist', ticker:'SCHW', co:'Charles Schwab', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'AXP', co:'American Express', date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: ir.americanexpress.com, December 19, 2025' },
-  { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Auto Parts", date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: O’Reilly Automotive press release (SEC 8-K/GlobeNewswire), July 1, 2026 — results released after 3:30 PM CT; conference call July 30, 10:00 AM CT' },
+  { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Auto Parts", date:'2026-07-30', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after 3:30 PM CT on July 29. Source: O’Reilly Automotive press release (SEC 8-K/GlobeNewswire), July 1, 2026', isNew:true },
   { cat:'watchlist', ticker:'BKNG', co:'Booking Holdings', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'ABNB', co:'Airbnb', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'WMT', co:'Walmart', date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Source: corporate.walmart.com, March 5, 2026' },
 ];
+const META = { lastUpdated: '2026-07-02', lastChanged: '2026-07-02' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
@@ -98,11 +101,12 @@ function isStale(dt){return dt&&dt<STALE;}
 function sessHtml(s){if(s==='BMO')return'<span class="sess bmo">Before Open</span>';if(s==='AMC')return'<span class="sess amc">After Close</span>';return'';}
 function fmtDate(d){return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
 const catLabels={holdings:'h',watchlist:'w',bullpen:'b'};
-const catNames={holdings:'Holdings',watchlist:'Watchlist',bullpen:'Bullpen'};
+const catNames={holdings:'Holdings',watchlist:'Bullpen',bullpen:"Z's BP"};
+function fmtShort(d){return parseDate(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
 function buildPanel(cat){
   const rows=EARNINGS.filter(e=>e.cat===cat&&e.status==='confirmed').sort((a,b)=>parseDate(a.date)-parseDate(b.date)).filter(e=>!isStale(parseDate(e.date)));
   if(!rows.length)return'<div class="empty-panel">No confirmed dates yet</div>';
-  return rows.map(e=>`<div class="entry"><div class="entry-ticker">${e.ticker}</div><div class="entry-company">${e.co}</div><div class="entry-row"><span class="entry-date">${fmtDate(parseDate(e.date))}</span><span class="entry-time">${e.timeCT} CT</span>${sessHtml(e.sess)}</div>${e.notes?`<div class="entry-notes">${e.notes}</div>`:''}</div>`).join('');
+  return rows.map(e=>`<div class="entry"><div class="entry-ticker">${e.ticker}${e.isNew?'<span class="new-badge">New</span>':''}</div><div class="entry-company">${e.co}</div><div class="entry-row"><span class="entry-date">${fmtDate(parseDate(e.date))}</span><span class="entry-time">${e.timeCT} CT</span>${sessHtml(e.sess)}</div>${e.notes?`<div class="entry-notes">${e.notes}</div>`:''}</div>`).join('');
 }
 function buildNA(){
   const order=['holdings','watchlist','bullpen'];
@@ -112,7 +116,7 @@ document.getElementById('holdingsBody').innerHTML=buildPanel('holdings');
 document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
 document.getElementById('bullpenBody').innerHTML=buildPanel('bullpen');
 document.getElementById('naGrid').innerHTML=buildNA();
-document.getElementById('updatedBadge').textContent='Updated: '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+document.getElementById('updatedBadge').innerHTML='Updated: '+fmtShort(META.lastUpdated)+'<span class="updated-sub">Last change: '+fmtShort(META.lastChanged)+'</span>';
 </script>
 </body>
 </html>
