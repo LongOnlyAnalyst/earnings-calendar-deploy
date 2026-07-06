@@ -77,12 +77,12 @@ const EARNINGS = [
   { cat:'holdings', ticker:'HEI', co:'HEICO', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'SBUX', co:'Starbucks', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   // BULLPEN
-  { cat:'bullpen', ticker:'TSLA', co:'Tesla', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen', ticker:'TSLA', co:'Tesla', date:'2026-07-22', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Tesla, Inc. press release (SEC Form 8-K, Q2 2026 Production, Deliveries & Deployments), July 2026', isNew:true },
   { cat:'bullpen', ticker:'UBER', co:'Uber', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'QXO', co:'QXO', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'DASH', co:'DoorDash', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'MELI', co:'MercadoLibre', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'bullpen', ticker:'FTNT', co:'Fortinet', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Fortinet press release (investor.fortinet.com), June 24, 2026', isNew:true },
+  { cat:'bullpen', ticker:'FTNT', co:'Fortinet', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Fortinet press release (investor.fortinet.com), June 24, 2026' },
   { cat:'bullpen', ticker:'SPCX', co:'SpaceX', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'CRWD', co:'CrowdStrike', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   // WATCHLIST
@@ -95,9 +95,9 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'ABNB', co:'Airbnb', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'WMT', co:'Walmart', date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Source: corporate.walmart.com, March 5, 2026' },
   { cat:'watchlist', ticker:'TJX', co:'TJX Companies', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026', isNew:true },
+  { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026' },
 ];
-const META = { lastUpdated: '2026-07-02', lastChanged: '2026-07-02' };
+const META = { lastUpdated: '2026-07-06', lastChanged: '2026-07-06' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
