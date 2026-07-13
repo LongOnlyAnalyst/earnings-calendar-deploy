@@ -66,8 +66,8 @@ const EARNINGS = [
   { cat:'holdings', ticker:'TXN', co:'Texas Instruments', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: prnewswire.com / investor.ti.com (CFO transition press release), June 2, 2026' },
   { cat:'holdings', ticker:'TMO', co:'Thermo Fisher Scientific', date:'2026-07-23', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: Thermo Fisher Scientific press release (BusinessWire/ir.thermofisher.com), July 1, 2026' },
   { cat:'holdings', ticker:'GGG', co:'Graco', date:'2026-07-23', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after NYSE close on July 22. Source: Graco Inc. press release (businesswire.com), July 1, 2026' },
-  { cat:'holdings', ticker:'GOOG', co:'Alphabet', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'holdings', ticker:'MSFT', co:'Microsoft', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'GOOG', co:'Alphabet', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call time shown (1:30 PM PT). Earnings release available before the call same day. Source: Alphabet press release (abc.xyz/investor), 2026', isNew:true },
+  { cat:'holdings', ticker:'MSFT', co:'Microsoft', date:'2026-07-29', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Webcast at 2:30 PM PT / 5:30 PM ET; results released after market close same day. Source: news.microsoft.com, July 8, 2026', isNew:true },
   { cat:'holdings', ticker:'META', co:'Meta Platforms', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'AAPL', co:'Apple', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'AMZN', co:'Amazon', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
@@ -77,10 +77,10 @@ const EARNINGS = [
   { cat:'holdings', ticker:'HEI', co:'HEICO', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'SBUX', co:'Starbucks', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   // BULLPEN
-  { cat:'bullpen', ticker:'TSLA', co:'Tesla', date:'2026-07-22', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Tesla, Inc. press release (SEC Form 8-K, Q2 2026 Production, Deliveries & Deployments), July 2026', isNew:true },
+  { cat:'bullpen', ticker:'TSLA', co:'Tesla', date:'2026-07-22', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Tesla, Inc. press release (SEC Form 8-K, Q2 2026 Production, Deliveries & Deployments), July 2026' },
   { cat:'bullpen', ticker:'UBER', co:'Uber', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'QXO', co:'QXO', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'bullpen', ticker:'DASH', co:'DoorDash', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen', ticker:'DASH', co:'DoorDash', date:'2026-08-05', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 1:30 PM PT / 4:30 PM ET; results released after market close same day. Source: DoorDash press release (businesswire.com / ir.doordash.com), July 6, 2026', isNew:true },
   { cat:'bullpen', ticker:'MELI', co:'MercadoLibre', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'FTNT', co:'Fortinet', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Fortinet press release (investor.fortinet.com), June 24, 2026' },
   { cat:'bullpen', ticker:'SPCX', co:'SpaceX', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
@@ -91,13 +91,13 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'SCHW', co:'Charles Schwab', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'AXP', co:'American Express', date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: ir.americanexpress.com, December 19, 2025' },
   { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Auto Parts", date:'2026-07-30', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after 3:30 PM CT on July 29. Source: O’Reilly Automotive press release (SEC 8-K/GlobeNewswire), July 1, 2026' },
-  { cat:'watchlist', ticker:'BKNG', co:'Booking Holdings', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'watchlist', ticker:'ABNB', co:'Airbnb', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'watchlist', ticker:'BKNG', co:'Booking Holdings', date:'2026-08-04', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 4:30 PM ET; results released ~4:00 PM ET same day. Source: Booking Holdings press release (PR Newswire), July 2026', isNew:true },
+  { cat:'watchlist', ticker:'ABNB', co:'Airbnb', date:'2026-08-06', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 2:00 PM PT / 5:00 PM ET; results/shareholder letter released after market close same day. Source: Airbnb press release (SEC Form 8-K / investors.airbnb.com), July 2026', isNew:true },
   { cat:'watchlist', ticker:'WMT', co:'Walmart', date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Source: corporate.walmart.com, March 5, 2026' },
   { cat:'watchlist', ticker:'TJX', co:'TJX Companies', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026' },
 ];
-const META = { lastUpdated: '2026-07-06', lastChanged: '2026-07-06' };
+const META = { lastUpdated: '2026-07-13', lastChanged: '2026-07-13' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
