@@ -136,7 +136,7 @@ async function exportChecklist(){
   const originalLabel=btn.textContent;
   btn.disabled=true;btn.textContent='Generating…';
   try{
-    const rows=EARNINGS.filter(e=>e.status==='confirmed'&&!isStale(parseDate(e.date))).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    const CATS=[{key:'holdings',label:'Holdings'},{key:'watchlist',label:'Bullpen'},{key:'bullpen',label:"Zane's Bullpen"}];
 
     const wb=new ExcelJS.Workbook();
     const ws=wb.addWorksheet('Checklist');
@@ -153,34 +153,30 @@ async function exportChecklist(){
     headerRow.values=['Ticker','Date','Time','Listened'];
     headerRow.eachCell(c=>{c.font={bold:true};c.alignment={vertical:'middle',horizontal:'center'};c.border={bottom:{style:'thin'}};});
 
-    rows.forEach((e,i)=>{
-      const r=ws.getRow(4+i);
-      r.getCell(1).value=e.ticker;
-      r.getCell(2).value=fmtDate(parseDate(e.date));
-      r.getCell(3).value=e.timeCT?(e.timeCT+' CT'):'';
-      r.getCell(4).value='';
-      r.eachCell({includeEmpty:true},c=>{c.alignment={vertical:'middle',horizontal:'center'};c.border={top:{style:'thin',color:{argb:'FFE8EDF2'}},bottom:{style:'thin',color:{argb:'FFE8EDF2'}},left:{style:'thin',color:{argb:'FFE8EDF2'}},right:{style:'thin',color:{argb:'FFE8EDF2'}}};});
-      r.getCell(4).border={top:{style:'thin',color:{argb:'FF94A3B8'}},bottom:{style:'thin',color:{argb:'FF94A3B8'}},left:{style:'thin',color:{argb:'FF94A3B8'}},right:{style:'thin',color:{argb:'FF94A3B8'}}};
-      r.height=20;
-    });
+    let rowNum=4;
+    CATS.forEach(({key,label})=>{
+      const rows=EARNINGS.filter(e=>e.cat===key&&e.status==='confirmed'&&!isStale(parseDate(e.date))).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+      if(!rows.length)return;
 
-    const buffer=await wb.xlsx.writeBuffer();
-    const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    a.download='earnings-checklist-'+now.toISOString().slice(0,10)+'.xlsx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }catch(err){
-    console.error(err);
-    alert('Could not generate the checklist file. Please try again.');
-  }finally{
-    btn.disabled=false;btn.textContent=originalLabel;
-  }
-}
-</script>
-</body>
-</html>
+      const secRow=ws.getRow(rowNum);
+      ws.mergeCells(rowNum,1,rowNum,4);
+      const secCell=secRow.getCell(1);
+      secCell.value=label;
+      secCell.font={bold:true,size:10,color:{argb:'FF1A2332'}};
+      secCell.alignment={vertical:'middle',horizontal:'left'};
+      secCell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF1F5F9'}};
+      secRow.height=18;
+      rowNum++;
+
+      rows.forEach(e=>{
+        const r=ws.getRow(rowNum);
+        r.getCell(1).value=e.ticker;
+        r.getCell(2).value=fmtDate(parseDate(e.date));
+        r.getCell(3).value=e.timeCT?(e.timeCT+' CT'):'';
+        r.getCell(4).value='';
+        r.eachCell({includeEmpty:true},c=>{c.alignment={vertical:'middle',horizontal:'center'};c.border={top:{style:'thin',color:{argb:'FFE8EDF2'}},bottom:{style:'thin',color:{argb:'FFE8EDF2'}},left:{style:'thin',color:{argb:'FFE8EDF2'}},right:{style:'thin',color:{argb:'FFE8EDF2'}}};});
+        r.getCell(4).border={top:{style:'thin',color:{argb:'FF94A3B8'}},bottom:{style:'thin',color:{argb:'FF94A3B8'}},left:{style:'thin',color:{argb:'FF94A3B8'}},right:{style:'thin',color:{argb:'FF94A3B8'}}};
+        r.height=20;
+        rowNum++;
+      });
+
