@@ -43,13 +43,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .na-chip .cat.w{color:#94a3b8}
 .na-chip .cat.b{color:#f9a8d4}
 .footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:32px;line-height:1.6}
+.header-actions{display:flex;align-items:center;gap:12px}
+.export-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-size:0.78rem;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background 0.15s}
+.export-btn:hover{background:rgba(255,255,255,0.22)}
+.export-btn:disabled{opacity:0.6;cursor:default}
 @media(max-width:900px){.panels{grid-template-columns:1fr}.page-header{padding:16px}.main{padding:16px 12px}}
 </style>
 </head>
 <body>
 <div class="page-header">
   <h1>Earnings Calendar</h1>
-  <div id="updatedBadge" class="updated-badge">Updated: —</div>
+  <div class="header-actions">
+    <button id="exportBtn" class="export-btn" onclick="exportChecklist()">Download Checklist (Excel)</button>
+    <div id="updatedBadge" class="updated-badge">Updated: —</div>
+  </div>
 </div>
 <div class="main">
   <div class="panels">
@@ -60,6 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="na-section"><div class="na-header">Not Announced</div><div class="na-grid" id="naGrid"></div></div>
   <div class="footer"><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script>
 const EARNINGS = [
   // HOLDINGS
@@ -122,6 +130,57 @@ document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
 document.getElementById('bullpenBody').innerHTML=buildPanel('bullpen');
 document.getElementById('naGrid').innerHTML=buildNA();
 document.getElementById('updatedBadge').innerHTML='Updated: '+fmtShort(META.lastUpdated)+'<span class="updated-sub">Last change: '+fmtShort(META.lastChanged)+'</span>';
+
+async function exportChecklist(){
+  const btn=document.getElementById('exportBtn');
+  const originalLabel=btn.textContent;
+  btn.disabled=true;btn.textContent='Generating…';
+  try{
+    const rows=EARNINGS.filter(e=>e.status==='confirmed'&&!isStale(parseDate(e.date))).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+
+    const wb=new ExcelJS.Workbook();
+    const ws=wb.addWorksheet('Checklist');
+    ws.columns=[{width:12},{width:16},{width:12},{width:12}];
+
+    const now=new Date();
+    const createdStr='Created: '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' at '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const createdCell=ws.getCell('A1');
+    createdCell.value=createdStr;
+    createdCell.font={size:7,italic:true,color:{argb:'FF94A3B8'}};
+    ws.mergeCells('A1:D1');
+
+    const headerRow=ws.getRow(3);
+    headerRow.values=['Ticker','Date','Time','Listened'];
+    headerRow.eachCell(c=>{c.font={bold:true};c.alignment={vertical:'middle',horizontal:'center'};c.border={bottom:{style:'thin'}};});
+
+    rows.forEach((e,i)=>{
+      const r=ws.getRow(4+i);
+      r.getCell(1).value=e.ticker;
+      r.getCell(2).value=fmtDate(parseDate(e.date));
+      r.getCell(3).value=e.timeCT?(e.timeCT+' CT'):'';
+      r.getCell(4).value='';
+      r.eachCell({includeEmpty:true},c=>{c.alignment={vertical:'middle',horizontal:'center'};c.border={top:{style:'thin',color:{argb:'FFE8EDF2'}},bottom:{style:'thin',color:{argb:'FFE8EDF2'}},left:{style:'thin',color:{argb:'FFE8EDF2'}},right:{style:'thin',color:{argb:'FFE8EDF2'}}};});
+      r.getCell(4).border={top:{style:'thin',color:{argb:'FF94A3B8'}},bottom:{style:'thin',color:{argb:'FF94A3B8'}},left:{style:'thin',color:{argb:'FF94A3B8'}},right:{style:'thin',color:{argb:'FF94A3B8'}}};
+      r.height=20;
+    });
+
+    const buffer=await wb.xlsx.writeBuffer();
+    const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='earnings-checklist-'+now.toISOString().slice(0,10)+'.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }catch(err){
+    console.error(err);
+    alert('Could not generate the checklist file. Please try again.');
+  }finally{
+    btn.disabled=false;btn.textContent=originalLabel;
+  }
+}
 </script>
 </body>
 </html>
