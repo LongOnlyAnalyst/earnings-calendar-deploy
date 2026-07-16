@@ -180,3 +180,26 @@ async function exportChecklist(){
         rowNum++;
       });
 
+      rowNum++;
+    });
+
+    const buffer=await wb.xlsx.writeBuffer();
+    const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='earnings-checklist-'+now.toISOString().slice(0,10)+'.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }catch(err){
+    console.error(err);
+    alert('Could not generate the checklist file. Please try again.');
+  }finally{
+    btn.disabled=false;btn.textContent=originalLabel;
+  }
+}
+</script>
+</body>
+</html>
