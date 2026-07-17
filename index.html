@@ -155,7 +155,9 @@ async function exportChecklist(){
 
     let rowNum=4;
     CATS.forEach(({key,label})=>{
-      const rows=EARNINGS.filter(e=>e.cat===key&&e.status==='confirmed'&&!isStale(parseDate(e.date))).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+      const confirmedRows=EARNINGS.filter(e=>e.cat===key&&e.status==='confirmed'&&!isStale(parseDate(e.date))).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+      const naRows=EARNINGS.filter(e=>e.cat===key&&e.status==='not-announced').sort((a,b)=>a.ticker.localeCompare(b.ticker));
+      const rows=[...confirmedRows,...naRows];
       if(!rows.length)return;
 
       const secRow=ws.getRow(rowNum);
@@ -171,7 +173,7 @@ async function exportChecklist(){
       rows.forEach(e=>{
         const r=ws.getRow(rowNum);
         r.getCell(1).value=e.ticker;
-        r.getCell(2).value=fmtDate(parseDate(e.date));
+        r.getCell(2).value=e.date?fmtDate(parseDate(e.date)):'';
         r.getCell(3).value=e.timeCT?(e.timeCT+' CT'):'';
         r.getCell(4).value='';
         r.eachCell({includeEmpty:true},c=>{c.alignment={vertical:'middle',horizontal:'center'};c.border={top:{style:'thin',color:{argb:'FFE8EDF2'}},bottom:{style:'thin',color:{argb:'FFE8EDF2'}},left:{style:'thin',color:{argb:'FFE8EDF2'}},right:{style:'thin',color:{argb:'FFE8EDF2'}}};});
