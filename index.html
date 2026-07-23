@@ -77,11 +77,11 @@ const EARNINGS = [
   { cat:'holdings', ticker:'GOOG', co:'Alphabet', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call time shown (1:30 PM PT). Earnings release available before the call same day. Source: Alphabet press release (abc.xyz/investor), 2026' },
   { cat:'holdings', ticker:'MSFT', co:'Microsoft', date:'2026-07-29', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Webcast at 2:30 PM PT / 5:30 PM ET; results released after market close same day. Source: news.microsoft.com, July 8, 2026' },
   { cat:'holdings', ticker:'META', co:'Meta Platforms', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Q2 2026 Earnings Call at 1:30 PM PT / 4:30 PM ET; results released after market close same day. Source: investor.atmeta.com (Investor Events), July 2026' },
-  { cat:'holdings', ticker:'AAPL', co:'Apple', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'holdings', ticker:'AMZN', co:'Amazon', date:'2026-07-30', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 2:00 PM PT / 5:00 PM ET (after market close). Source: aboutamazon.com (Amazon official news), July 16, 2026', isNew:true },
+  { cat:'holdings', ticker:'AAPL', co:'Apple', date:'2026-07-30', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 2:00 PM PT / 5:00 PM ET; results released after market close same day. Source: investor.apple.com (Investor Relations page), July 2026', isNew:true },
+  { cat:'holdings', ticker:'AMZN', co:'Amazon', date:'2026-07-30', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 2:00 PM PT / 5:00 PM ET (after market close). Source: aboutamazon.com (Amazon official news), July 16, 2026' },
   { cat:'holdings', ticker:'RKT', co:'Rocket Companies', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'CPRT', co:'Copart', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
-  { cat:'holdings', ticker:'COST', co:'Costco', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'holdings', ticker:'COST', co:'Costco', date:'2026-09-24', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q4 2026 Earnings Call, conference call at 2:00 PM PT / 5:00 PM ET; results released after market close same day. Source: investor.costco.com (Events & Presentations), July 2026', isNew:true },
   { cat:'holdings', ticker:'HEI', co:'HEICO', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'SBUX', co:'Starbucks', date:'2026-07-29', timeCT:'3:15 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 1:15 PM PT / 4:15 PM ET; results released after market close same day. Source: investor.starbucks.com press release, July 2026' },
   // BULLPEN
@@ -91,7 +91,7 @@ const EARNINGS = [
   { cat:'bullpen', ticker:'DASH', co:'DoorDash', date:'2026-08-05', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 1:30 PM PT / 4:30 PM ET; results released after market close same day. Source: DoorDash press release (businesswire.com / ir.doordash.com), July 6, 2026' },
   { cat:'bullpen', ticker:'MELI', co:'MercadoLibre', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'bullpen', ticker:'FTNT', co:'Fortinet', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Fortinet press release (investor.fortinet.com), June 24, 2026' },
-  { cat:'bullpen', ticker:'SPCX', co:'SpaceX', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
+  { cat:'bullpen', ticker:'SPCX', co:'SpaceX', date:'2026-08-04', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Results posted after market close; webcast/conference call at 4:30 PM ET / 3:30 PM CT same day. Source: SpaceX press release (ir.spacex.com), July 20, 2026', isNew:true },
   { cat:'bullpen', ticker:'CRWD', co:'CrowdStrike', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   // WATCHLIST
   { cat:'watchlist', ticker:'JPM', co:'JPMorgan Chase', date:'2026-07-14', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: jpmorganchase.com, May 21, 2025' },
@@ -105,7 +105,7 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'TJX', co:'TJX Companies', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026' },
 ];
-const META = { lastUpdated: '2026-07-20', lastChanged: '2026-07-20' };
+const META = { lastUpdated: '2026-07-23', lastChanged: '2026-07-23' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
