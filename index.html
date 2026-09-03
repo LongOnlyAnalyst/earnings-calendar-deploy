@@ -42,8 +42,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .na-chip .cat.h{color:#93c5fd}
 .na-chip .cat.w{color:#94a3b8}
 .na-chip .cat.b{color:#f9a8d4}
-.footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:8px;line-height:1.6}
-.footer-note{text-align:center;font-size:0.72rem;color:#64748b;padding-bottom:32px;line-height:1.55}
+.footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:32px;line-height:1.6}
+.footer p{margin:0}
+.footer p+p{margin-top:4px}
 .header-actions{display:flex;align-items:center;gap:12px}
 .export-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-size:0.78rem;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background 0.15s}
 .export-btn:hover{background:rgba(255,255,255,0.22)}
@@ -120,8 +121,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div class="cal-grid" id="calGrid"></div>
     </div>
   </div>
-  <div class="footer"><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</div>
-  <div class="footer-note">* Results released after market close the prior day. Date and time shown are the conference call.</div>
+  <div class="footer">
+    <p><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</p>
+    <p>* Results released after market close the prior day. Date and time shown are the conference call.</p>
+  </div>
 </div>
 <script>
 const EARNINGS = [
@@ -178,7 +181,7 @@ function buildPanel(cat){
 }
 function buildNA(){
   const order=['holdings','watchlist','bullpen'];
-  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&e.status==='not-announced').sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
+  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&(e.status==='not-announced'||(e.status==='confirmed'&&isStale(parseDate(e.date))))).sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
 }
 document.getElementById('holdingsBody').innerHTML=buildPanel('holdings');
 document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
