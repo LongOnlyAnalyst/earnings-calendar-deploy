@@ -47,24 +47,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .export-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-size:0.78rem;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background 0.15s}
 .export-btn:hover{background:rgba(255,255,255,0.22)}
 .export-btn:disabled{opacity:0.6;cursor:default}
-@media(max-width:900px){.panels{grid-template-columns:1fr}.page-header{padding:16px}.main{padding:16px 12px}}
+.view-toggle{display:inline-flex;border:1px solid rgba(255,255,255,0.25);border-radius:8px;overflow:hidden;flex-shrink:0}
+.view-btn{background:rgba(255,255,255,0.12);border:none;color:#cbd5e1;font-size:0.78rem;font-weight:600;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s}
+.view-btn:not(:last-child){border-right:1px solid rgba(255,255,255,0.25)}
+.view-btn:hover{background:rgba(255,255,255,0.22);color:white}
+.view-btn.active{background:rgba(255,255,255,0.22);color:white}
+#calendarView{margin-bottom:4px}
+.cal-card{background:white;border-radius:12px;border:1px solid #e8edf2;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.cal-toolbar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #e8edf2}
+.cal-nav{background:#f8fafc;border:1px solid #e8edf2;color:#1a2332;font-size:1.05rem;font-weight:600;width:32px;height:32px;border-radius:8px;cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.cal-nav:hover{background:#e8edf2}
+.cal-month-label{font-size:1.05rem;font-weight:700;flex:1;text-align:center;letter-spacing:-0.01em;color:#1a2332}
+.cal-today-btn{background:#f8fafc;border:1px solid #e8edf2;color:#1a2332;font-size:0.75rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer}
+.cal-today-btn:hover{background:#e8edf2}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal-dow{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;text-align:center;padding:8px 4px;border-bottom:1px solid #e8edf2;border-right:1px solid #f1f5f9}
+.cal-dow:nth-child(7n),.cal-cell:nth-child(7n){border-right:none}
+.cal-cell{min-height:90px;border-right:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;padding:6px 5px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.cal-cell.muted{background:#fafbfc}
+.cal-cell.muted .cal-daynum{color:#cbd5e1}
+.cal-daynum{font-size:0.75rem;font-weight:600;color:#475569;width:24px;height:24px;line-height:24px;text-align:center;flex-shrink:0}
+.cal-cell.today .cal-daynum{background:#1a2332;color:white;border-radius:50%}
+.cal-event{font-size:0.68rem;font-weight:700;padding:2px 6px;border-radius:4px;line-height:1.3;overflow:hidden;min-width:0;white-space:nowrap;text-overflow:ellipsis}
+.cal-event.holdings{background:#dbeafe;color:#1d4ed8}
+.cal-event.watchlist{background:#f1f5f9;color:#475569}
+.cal-event.bullpen{background:#fce7f3;color:#be185d}
+.cal-event .t{margin-right:4px}
+.cal-event .tm{font-weight:600;opacity:0.9}
+@media(max-width:900px){
+.panels{grid-template-columns:1fr}
+.page-header{padding:16px;flex-wrap:wrap}
+.main{padding:16px 12px}
+.cal-cell{min-height:72px;padding:4px 3px 6px}
+.cal-event{font-size:0.6rem;padding:2px 4px;white-space:normal}
+.cal-month-label{font-size:0.9rem}
+.cal-toolbar{padding:10px 12px}
+.cal-dow{font-size:0.6rem;padding:6px 2px}
+.view-btn{padding:8px 10px;font-size:0.72rem}
+}
 </style>
 </head>
 <body>
 <div class="page-header">
   <h1>Earnings Calendar</h1>
   <div class="header-actions">
+    <div class="view-toggle" role="group" aria-label="View">
+      <button type="button" id="listViewBtn" class="view-btn active">List</button>
+      <button type="button" id="calViewBtn" class="view-btn">Calendar</button>
+    </div>
     <button id="exportBtn" class="export-btn" onclick="exportChecklist()">Download Checklist (Excel)</button>
     <div id="updatedBadge" class="updated-badge">Updated: —</div>
   </div>
 </div>
 <div class="main">
-  <div class="panels">
-    <div class="panel"><div class="panel-header"><span class="panel-label holdings">Holdings</span></div><div id="holdingsBody"></div></div>
-    <div class="panel"><div class="panel-header"><span class="panel-label watchlist">Bullpen</span></div><div id="watchlistBody"></div></div>
-    <div class="panel"><div class="panel-header"><span class="panel-label bullpen">Zane's Bullpen</span></div><div id="bullpenBody"></div></div>
+  <div id="listView">
+    <div class="panels">
+      <div class="panel"><div class="panel-header"><span class="panel-label holdings">Holdings</span></div><div id="holdingsBody"></div></div>
+      <div class="panel"><div class="panel-header"><span class="panel-label watchlist">Bullpen</span></div><div id="watchlistBody"></div></div>
+      <div class="panel"><div class="panel-header"><span class="panel-label bullpen">Zane's Bullpen</span></div><div id="bullpenBody"></div></div>
+    </div>
+    <div class="na-section"><div class="na-header">Not Announced</div><div class="na-grid" id="naGrid"></div></div>
   </div>
-  <div class="na-section"><div class="na-header">Not Announced</div><div class="na-grid" id="naGrid"></div></div>
+  <div id="calendarView" hidden>
+    <div class="cal-card">
+      <div class="cal-toolbar">
+        <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
+        <div class="cal-month-label" id="calMonthLabel"></div>
+        <button type="button" class="cal-nav" id="calNext" aria-label="Next month">&rsaquo;</button>
+        <button type="button" class="cal-today-btn" id="calToday">Today</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+  </div>
   <div class="footer"><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
@@ -108,7 +162,7 @@ const EARNINGS = [
 const META = { lastUpdated: '2026-09-03', lastChanged: '2026-09-03' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
-const STALE=new Date(TODAY.getTime()-14*24*60*60*1000);
+const STALE=new Date(TODAY.getTime()-30*24*60*60*1000);
 function parseDate(d){if(!d)return null;const[y,m,day]=d.split('-').map(Number);return new Date(y,m-1,day);}
 function isStale(dt){return dt&&dt<STALE;}
 function sessHtml(s){if(s==='BMO')return'<span class="sess bmo">Before Open</span>';if(s==='AMC')return'<span class="sess amc">After Close</span>';return'';}
@@ -130,6 +184,58 @@ document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
 document.getElementById('bullpenBody').innerHTML=buildPanel('bullpen');
 document.getElementById('naGrid').innerHTML=buildNA();
 document.getElementById('updatedBadge').innerHTML='Updated: '+fmtShort(META.lastUpdated)+'<span class="updated-sub">Last change: '+fmtShort(META.lastChanged)+'</span>';
+
+let calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
+function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function calEventsByDate(){
+  const map={};
+  EARNINGS.filter(e=>e.status==='confirmed'&&e.date&&!isStale(parseDate(e.date))).forEach(e=>{
+    (map[e.date]||(map[e.date]=[])).push(e);
+  });
+  return map;
+}
+function renderCalendar(){
+  const y=calMonth.getFullYear(), m=calMonth.getMonth();
+  document.getElementById('calMonthLabel').textContent=calMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const startDow=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const daysInPrev=new Date(y,m,0).getDate();
+  const totalCells=Math.ceil((startDow+daysInMonth)/7)*7;
+  const events=calEventsByDate();
+  const tY=TODAY.getFullYear(), tM=TODAY.getMonth(), tD=TODAY.getDate();
+  const dows=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html=dows.map(d=>'<div class="cal-dow">'+d+'</div>').join('');
+  for(let i=0;i<totalCells;i++){
+    const off=i-startDow;
+    let cellDate, muted, dayNum;
+    if(off<0){dayNum=daysInPrev+off+1;cellDate=new Date(y,m-1,dayNum);muted=true;}
+    else if(off>=daysInMonth){dayNum=off-daysInMonth+1;cellDate=new Date(y,m+1,dayNum);muted=true;}
+    else {dayNum=off+1;cellDate=new Date(y,m,dayNum);muted=false;}
+    const key=dateKey(cellDate);
+    const isToday=cellDate.getFullYear()===tY&&cellDate.getMonth()===tM&&cellDate.getDate()===tD;
+    const evHtml=(events[key]||[]).map(e=>'<div class="cal-event '+e.cat+'" title="'+e.ticker+' '+e.timeCT+' CT"><span class="t">'+e.ticker+'</span><span class="tm">'+e.timeCT+'</span></div>').join('');
+    html+='<div class="cal-cell'+(muted?' muted':'')+(isToday?' today':'')+'"><div class="cal-daynum">'+dayNum+'</div>'+evHtml+'</div>';
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+function setView(v){
+  const isCal=v==='calendar';
+  document.getElementById('listView').hidden=isCal;
+  document.getElementById('calendarView').hidden=!isCal;
+  document.getElementById('listViewBtn').classList.toggle('active',!isCal);
+  document.getElementById('calViewBtn').classList.toggle('active',isCal);
+  try{localStorage.setItem('earningsView',isCal?'calendar':'list');}catch(err){}
+  if(isCal) renderCalendar();
+}
+document.getElementById('listViewBtn').addEventListener('click',()=>setView('list'));
+document.getElementById('calViewBtn').addEventListener('click',()=>setView('calendar'));
+document.getElementById('calPrev').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);renderCalendar();});
+document.getElementById('calNext').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);renderCalendar();});
+document.getElementById('calToday').addEventListener('click',()=>{calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);renderCalendar();});
+let savedView='list';
+try{savedView=localStorage.getItem('earningsView')||'list';}catch(err){}
+if(savedView==='calendar') setView('calendar');
+else renderCalendar();
 
 async function exportChecklist(){
   const btn=document.getElementById('exportBtn');
