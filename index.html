@@ -79,13 +79,13 @@ body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--t
 .view-btn.active{background:var(--hold-bg);color:var(--hold)}
 #calendarView{margin-bottom:4px}
 .cal-card{background:var(--card);border-radius:6px;border:1px solid var(--line);overflow:hidden}
-.cal-toolbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2)}
-.cal-month-cluster{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.cal-toolbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.cal-month-cluster{display:flex;align-items:center;gap:10px;grid-column:2;justify-self:center}
 .cal-nav-group{display:inline-flex;gap:4px;flex-shrink:0}
 .cal-nav{background:var(--card);border:1px solid var(--line);color:var(--text);font-size:1.15rem;font-weight:600;width:34px;height:34px;border-radius:4px;cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center}
 .cal-nav:hover{background:var(--line)}
 .cal-month-label{font-size:1.15rem;font-weight:650;letter-spacing:0.06em;color:var(--text);font-family:var(--mono);text-transform:uppercase;white-space:nowrap}
-.cal-today-btn{background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:0.78rem;font-weight:600;padding:5px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase}
+.cal-today-btn{grid-column:3;justify-self:end;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:0.78rem;font-weight:600;padding:5px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase}
 .cal-today-btn:hover{background:var(--line);color:var(--text)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--bg)}
 .cal-dow{font-size:0.74rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);text-align:center;padding:7px 4px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);font-family:var(--mono);background:var(--bg2)}
