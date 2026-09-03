@@ -42,7 +42,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .na-chip .cat.h{color:#93c5fd}
 .na-chip .cat.w{color:#94a3b8}
 .na-chip .cat.b{color:#f9a8d4}
-.footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:32px;line-height:1.6}
+.footer{text-align:center;font-size:0.72rem;color:#94a3b8;margin-top:20px;padding-bottom:8px;line-height:1.6}
+.footer-note{text-align:center;font-size:0.72rem;color:#64748b;padding-bottom:32px;line-height:1.55}
 .header-actions{display:flex;align-items:center;gap:12px}
 .export-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-size:0.78rem;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background 0.15s}
 .export-btn:hover{background:rgba(255,255,255,0.22)}
@@ -92,15 +93,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <h1>Earnings Calendar</h1>
   <div class="header-actions">
     <div class="view-toggle" role="group" aria-label="View">
-      <button type="button" id="listViewBtn" class="view-btn active">List</button>
-      <button type="button" id="calViewBtn" class="view-btn">Calendar</button>
+      <button type="button" id="listViewBtn" class="view-btn">List</button>
+      <button type="button" id="calViewBtn" class="view-btn active">Calendar</button>
     </div>
     <button id="exportBtn" class="export-btn" onclick="exportChecklist()">Download Checklist (Excel)</button>
     <div id="updatedBadge" class="updated-badge">Updated: —</div>
   </div>
 </div>
 <div class="main">
-  <div id="listView">
+  <div id="listView" hidden>
     <div class="panels">
       <div class="panel"><div class="panel-header"><span class="panel-label holdings">Holdings</span></div><div id="holdingsBody"></div></div>
       <div class="panel"><div class="panel-header"><span class="panel-label watchlist">Bullpen</span></div><div id="watchlistBody"></div></div>
@@ -108,7 +109,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
     <div class="na-section"><div class="na-header">Not Announced</div><div class="na-grid" id="naGrid"></div></div>
   </div>
-  <div id="calendarView" hidden>
+  <div id="calendarView">
     <div class="cal-card">
       <div class="cal-toolbar">
         <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
@@ -120,6 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
   </div>
   <div class="footer"><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</div>
+  <div class="footer-note">* Results released after market close the prior day. Date and time shown are the conference call.</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script>
@@ -127,7 +129,7 @@ const EARNINGS = [
   // HOLDINGS
   { cat:'holdings', ticker:'TXN', co:'Texas Instruments', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Source: prnewswire.com / investor.ti.com (CFO transition press release), June 2, 2026' },
   { cat:'holdings', ticker:'TMO', co:'Thermo Fisher Scientific', date:'2026-07-23', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: Thermo Fisher Scientific press release (BusinessWire/ir.thermofisher.com), July 1, 2026' },
-  { cat:'holdings', ticker:'GGG', co:'Graco', date:'2026-07-23', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after NYSE close on July 22. Source: Graco Inc. press release (businesswire.com), July 1, 2026' },
+  { cat:'holdings', ticker:'GGG', co:'Graco', date:'2026-07-23', timeCT:'10:00 AM', sess:'', status:'confirmed', split:true, notes:'Conference call time shown. Results/press release come out after NYSE close on July 22. Source: Graco Inc. press release (businesswire.com), July 1, 2026' },
   { cat:'holdings', ticker:'GOOG', co:'Alphabet', date:'2026-07-22', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call time shown (1:30 PM PT). Earnings release available before the call same day. Source: Alphabet press release (abc.xyz/investor), 2026' },
   { cat:'holdings', ticker:'MSFT', co:'Microsoft', date:'2026-07-29', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Webcast at 2:30 PM PT / 5:30 PM ET; results released after market close same day. Source: news.microsoft.com, July 8, 2026' },
   { cat:'holdings', ticker:'META', co:'Meta Platforms', date:'2026-07-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Q2 2026 Earnings Call at 1:30 PM PT / 4:30 PM ET; results released after market close same day. Source: investor.atmeta.com (Investor Events), July 2026' },
@@ -136,7 +138,7 @@ const EARNINGS = [
   { cat:'holdings', ticker:'RKT', co:'Rocket Companies', date:'2026-08-06', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 4:30 PM ET (after market close); press release issued prior to the call. Source: Rocket Companies, Inc. press release (PR Newswire), July 23, 2026' },
   { cat:'holdings', ticker:'CPRT', co:'Copart', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'holdings', ticker:'COST', co:'Costco', date:'2026-09-24', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q4 2026 Earnings Call, conference call at 2:00 PM PT / 5:00 PM ET; results released after market close same day. Source: investor.costco.com (Events & Presentations), July 2026' },
-  { cat:'holdings', ticker:'HEI', co:'HEICO', date:'2026-08-26', timeCT:'8:00 AM', sess:'BMO', status:'confirmed', notes:'Conference call time shown (9:00 AM ET, Wed Aug 26). Results/press release come out after the NYSE close on August 25. Source: HEICO Corporation press release (ACCESS Newswire), August 10, 2026' },
+  { cat:'holdings', ticker:'HEI', co:'HEICO', date:'2026-08-26', timeCT:'8:00 AM', sess:'BMO', status:'confirmed', split:true, notes:'Conference call time shown (9:00 AM ET, Wed Aug 26). Results/press release come out after the NYSE close on August 25. Source: HEICO Corporation press release (ACCESS Newswire), August 10, 2026' },
   { cat:'holdings', ticker:'SBUX', co:'Starbucks', date:'2026-07-29', timeCT:'3:15 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 1:15 PM PT / 4:15 PM ET; results released after market close same day. Source: investor.starbucks.com press release, July 2026' },
   // BULLPEN
   { cat:'bullpen', ticker:'TSLA', co:'Tesla', date:'2026-07-22', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Source: Tesla, Inc. press release (SEC Form 8-K, Q2 2026 Production, Deliveries & Deployments), July 2026' },
@@ -152,17 +154,17 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'NFLX', co:'Netflix', date:'2026-07-16', timeCT:'3:45 PM', sess:'AMC', status:'confirmed', notes:'Source: ir.netflix.net, June 15, 2026' },
   { cat:'watchlist', ticker:'SCHW', co:'Charles Schwab', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'AXP', co:'American Express', date:'2026-07-24', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Source: ir.americanexpress.com, December 19, 2025' },
-  { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Auto Parts", date:'2026-07-30', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown. Results/press release come out after 3:30 PM CT on July 29. Source: O’Reilly Automotive press release (SEC 8-K/GlobeNewswire), July 1, 2026' },
+  { cat:'watchlist', ticker:'ORLY', co:"O'Reilly Auto Parts", date:'2026-07-30', timeCT:'10:00 AM', sess:'', status:'confirmed', split:true, notes:'Conference call time shown. Results/press release come out after 3:30 PM CT on July 29. Source: O’Reilly Automotive press release (SEC 8-K/GlobeNewswire), July 1, 2026' },
   { cat:'watchlist', ticker:'BKNG', co:'Booking Holdings', date:'2026-08-04', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 4:30 PM ET; results released ~4:00 PM ET same day. Source: Booking Holdings press release (PR Newswire), July 2026' },
   { cat:'watchlist', ticker:'ABNB', co:'Airbnb', date:'2026-08-06', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Conference call at 2:00 PM PT / 5:00 PM ET; results/shareholder letter released after market close same day. Source: Airbnb press release (SEC Form 8-K / investors.airbnb.com), July 2026' },
   { cat:'watchlist', ticker:'WMT', co:'Walmart', date:'2026-08-20', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Source: corporate.walmart.com, March 5, 2026' },
   { cat:'watchlist', ticker:'TJX', co:'TJX Companies', date:'2026-08-19', timeCT:'10:00 AM', sess:'', status:'confirmed', notes:'Q2 FY2027. Conference call time shown (11:00 AM ET). Results/press release come out the same morning before 8:30 AM CT. Source: The TJX Companies, Inc. press release (businesswire.com), August 5, 2026' },
-  { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026' },
+  { cat:'watchlist', ticker:'FAST', co:'Fastenal', date:'2026-07-14', timeCT:'9:00 AM', sess:'', status:'confirmed', split:true, notes:'Conference call time shown (officially confirmed); results typically released the prior business day. Source: Fastenal Company press release (businesswire.com), June 26, 2026' },
 ];
 const META = { lastUpdated: '2026-09-03', lastChanged: '2026-09-03' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
-const STALE=new Date(TODAY.getTime()-30*24*60*60*1000);
+const STALE=new Date(TODAY.getTime()-7*24*60*60*1000);
 function parseDate(d){if(!d)return null;const[y,m,day]=d.split('-').map(Number);return new Date(y,m-1,day);}
 function isStale(dt){return dt&&dt<STALE;}
 function sessHtml(s){if(s==='BMO')return'<span class="sess bmo">Before Open</span>';if(s==='AMC')return'<span class="sess amc">After Close</span>';return'';}
@@ -173,11 +175,11 @@ function fmtShort(d){return parseDate(d).toLocaleDateString('en-US',{month:'shor
 function buildPanel(cat){
   const rows=EARNINGS.filter(e=>e.cat===cat&&e.status==='confirmed').sort((a,b)=>parseDate(a.date)-parseDate(b.date)).filter(e=>!isStale(parseDate(e.date)));
   if(!rows.length)return'<div class="empty-panel">No confirmed dates yet</div>';
-  return rows.map(e=>`<div class="entry"><div class="entry-ticker">${e.ticker}${e.isNew?'<span class="new-badge">New</span>':''}</div><div class="entry-company">${e.co}</div><div class="entry-row"><span class="entry-date">${fmtDate(parseDate(e.date))}</span><span class="entry-time">${e.timeCT} CT</span>${sessHtml(e.sess)}</div>${e.notes?`<div class="entry-notes">${e.notes}</div>`:''}</div>`).join('');
+  return rows.map(e=>`<div class="entry"><div class="entry-ticker">${e.ticker}${e.split?'*':''}${e.isNew?'<span class="new-badge">New</span>':''}</div><div class="entry-company">${e.co}</div><div class="entry-row"><span class="entry-date">${fmtDate(parseDate(e.date))}</span><span class="entry-time">${e.timeCT} CT</span>${sessHtml(e.sess)}</div>${e.notes?`<div class="entry-notes">${e.notes}</div>`:''}</div>`).join('');
 }
 function buildNA(){
   const order=['holdings','watchlist','bullpen'];
-  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&(e.status==='not-announced'||(e.status==='confirmed'&&isStale(parseDate(e.date))))).sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
+  return order.flatMap(cat=>EARNINGS.filter(e=>e.cat===cat&&e.status==='not-announced').sort((a,b)=>a.ticker.localeCompare(b.ticker)).map(e=>`<div class="na-chip"><div class="sym">${e.ticker}</div><div class="co">${e.co}</div><div class="cat ${catLabels[cat]}">${catNames[cat]}</div></div>`)).join('');
 }
 document.getElementById('holdingsBody').innerHTML=buildPanel('holdings');
 document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
@@ -189,7 +191,7 @@ let calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
 function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function calEventsByDate(){
   const map={};
-  EARNINGS.filter(e=>e.status==='confirmed'&&e.date&&!isStale(parseDate(e.date))).forEach(e=>{
+  EARNINGS.filter(e=>e.status==='confirmed'&&e.date).forEach(e=>{
     (map[e.date]||(map[e.date]=[])).push(e);
   });
   return map;
@@ -213,7 +215,7 @@ function renderCalendar(){
     else {dayNum=off+1;cellDate=new Date(y,m,dayNum);muted=false;}
     const key=dateKey(cellDate);
     const isToday=cellDate.getFullYear()===tY&&cellDate.getMonth()===tM&&cellDate.getDate()===tD;
-    const evHtml=(events[key]||[]).map(e=>'<div class="cal-event '+e.cat+'" title="'+e.ticker+' '+e.timeCT+' CT"><span class="t">'+e.ticker+'</span><span class="tm">'+e.timeCT+'</span></div>').join('');
+    const evHtml=(events[key]||[]).map(e=>'<div class="cal-event '+e.cat+'" title="'+e.ticker+(e.split?'*':'')+' '+e.timeCT+' CT"><span class="t">'+e.ticker+(e.split?'*':'')+'</span><span class="tm">'+e.timeCT+'</span></div>').join('');
     html+='<div class="cal-cell'+(muted?' muted':'')+(isToday?' today':'')+'"><div class="cal-daynum">'+dayNum+'</div>'+evHtml+'</div>';
   }
   document.getElementById('calGrid').innerHTML=html;
@@ -232,10 +234,9 @@ document.getElementById('calViewBtn').addEventListener('click',()=>setView('cale
 document.getElementById('calPrev').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);renderCalendar();});
 document.getElementById('calNext').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);renderCalendar();});
 document.getElementById('calToday').addEventListener('click',()=>{calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);renderCalendar();});
-let savedView='list';
-try{savedView=localStorage.getItem('earningsView')||'list';}catch(err){}
-if(savedView==='calendar') setView('calendar');
-else renderCalendar();
+let savedView='calendar';
+try{savedView=localStorage.getItem('earningsView')||'calendar';}catch(err){}
+setView(savedView==='list'?'list':'calendar');
 
 async function exportChecklist(){
   const btn=document.getElementById('exportBtn');
