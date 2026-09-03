@@ -64,7 +64,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
 .cal-dow{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;text-align:center;padding:8px 4px;border-bottom:1px solid #e8edf2;border-right:1px solid #f1f5f9}
 .cal-dow:nth-child(7n),.cal-cell:nth-child(7n){border-right:none}
-.cal-cell{min-height:90px;border-right:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;padding:6px 5px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.cal-cell{min-height:72px;border-right:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;padding:6px 5px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
 .cal-cell.muted{background:#fafbfc}
 .cal-cell.muted .cal-daynum{color:#cbd5e1}
 .cal-daynum{font-size:0.75rem;font-weight:600;color:#475569;width:24px;height:24px;line-height:24px;text-align:center;flex-shrink:0}
@@ -79,7 +79,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .panels{grid-template-columns:1fr}
 .page-header{padding:16px;flex-wrap:wrap}
 .main{padding:16px 12px}
-.cal-cell{min-height:72px;padding:4px 3px 6px}
+.cal-cell{min-height:58px;padding:4px 3px 6px}
 .cal-event{font-size:0.6rem;padding:2px 4px;white-space:normal}
 .cal-month-label{font-size:0.9rem}
 .cal-toolbar{padding:10px 12px}
@@ -123,7 +123,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="footer"><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</div>
   <div class="footer-note">* Results released after market close the prior day. Date and time shown are the conference call.</div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script>
 const EARNINGS = [
   // HOLDINGS
@@ -226,7 +225,7 @@ function setView(v){
   document.getElementById('calendarView').hidden=!isCal;
   document.getElementById('listViewBtn').classList.toggle('active',!isCal);
   document.getElementById('calViewBtn').classList.toggle('active',isCal);
-  try{localStorage.setItem('earningsView',isCal?'calendar':'list');}catch(err){}
+  try{localStorage.setItem('earningsViewV2',isCal?'calendar':'list');}catch(err){}
   if(isCal) renderCalendar();
 }
 document.getElementById('listViewBtn').addEventListener('click',()=>setView('list'));
@@ -235,14 +234,24 @@ document.getElementById('calPrev').addEventListener('click',()=>{calMonth=new Da
 document.getElementById('calNext').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);renderCalendar();});
 document.getElementById('calToday').addEventListener('click',()=>{calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);renderCalendar();});
 let savedView='calendar';
-try{savedView=localStorage.getItem('earningsView')||'calendar';}catch(err){}
+try{savedView=localStorage.getItem('earningsViewV2')||'calendar';}catch(err){}
 setView(savedView==='list'?'list':'calendar');
 
+function loadExcelJS(){
+  if(window.ExcelJS) return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js';
+    s.onload=resolve; s.onerror=()=>reject(new Error('exceljs'));
+    document.head.appendChild(s);
+  });
+}
 async function exportChecklist(){
   const btn=document.getElementById('exportBtn');
   const originalLabel=btn.textContent;
   btn.disabled=true;btn.textContent='Generating…';
   try{
+    await loadExcelJS();
     const CATS=[{key:'holdings',label:'Holdings'},{key:'watchlist',label:'Bullpen'},{key:'bullpen',label:"Zane's Bullpen"}];
 
     const wb=new ExcelJS.Workbook();
