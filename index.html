@@ -33,8 +33,7 @@ html{font-size:18px;background:var(--bg);color:var(--text)}
 body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--text)}
 .page-header{background:var(--bg2);color:var(--text);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
 .page-header h1{font-size:1.28rem;font-weight:700;letter-spacing:0.02em;font-family:var(--mono)}
-.updated-badge{background:transparent;border:1px solid var(--line);border-radius:4px;padding:6px 12px;font-size:0.78rem;color:var(--muted);white-space:nowrap;flex-shrink:0;text-align:right;line-height:1.45;font-family:var(--mono)}
-.updated-badge .updated-sub{display:block;font-size:0.7rem;color:var(--dim);margin-top:1px}
+.updated-badge{background:transparent;border:1px solid var(--line);border-radius:4px;padding:6px 12px;font-size:0.78rem;color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:var(--mono)}
 .new-badge{display:inline-flex;align-items:center;background:#10261a;color:var(--today);font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle;font-family:var(--mono);border:1px solid #1f5c3a}
 .main{max-width:1280px;margin:0 auto;padding:24px 22px}
 .panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;align-items:start}
@@ -80,10 +79,12 @@ body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--t
 .view-btn.active{background:var(--hold-bg);color:var(--hold)}
 #calendarView{margin-bottom:4px}
 .cal-card{background:var(--card);border-radius:6px;border:1px solid var(--line);overflow:hidden}
-.cal-toolbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.cal-toolbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.cal-month-cluster{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.cal-nav-group{display:inline-flex;gap:4px;flex-shrink:0}
 .cal-nav{background:var(--card);border:1px solid var(--line);color:var(--text);font-size:1.15rem;font-weight:600;width:34px;height:34px;border-radius:4px;cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center}
 .cal-nav:hover{background:var(--line)}
-.cal-month-label{font-size:1.15rem;font-weight:650;flex:1;text-align:center;letter-spacing:0.06em;color:var(--text);font-family:var(--mono);text-transform:uppercase}
+.cal-month-label{font-size:1.15rem;font-weight:650;letter-spacing:0.06em;color:var(--text);font-family:var(--mono);text-transform:uppercase;white-space:nowrap}
 .cal-today-btn{background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:0.78rem;font-weight:600;padding:5px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);letter-spacing:0.06em;text-transform:uppercase}
 .cal-today-btn:hover{background:var(--line);color:var(--text)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--bg)}
@@ -136,9 +137,13 @@ body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--t
   <div id="calendarView">
     <div class="cal-card">
       <div class="cal-toolbar">
-        <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
-        <div class="cal-month-label" id="calMonthLabel"></div>
-        <button type="button" class="cal-nav" id="calNext" aria-label="Next month">&rsaquo;</button>
+        <div class="cal-month-cluster">
+          <div class="cal-month-label" id="calMonthLabel"></div>
+          <div class="cal-nav-group">
+            <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
+            <button type="button" class="cal-nav" id="calNext" aria-label="Next month">&rsaquo;</button>
+          </div>
+        </div>
         <button type="button" class="cal-today-btn" id="calToday">Today</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
@@ -211,7 +216,7 @@ document.getElementById('holdingsBody').innerHTML=buildPanel('holdings');
 document.getElementById('watchlistBody').innerHTML=buildPanel('watchlist');
 document.getElementById('bullpenBody').innerHTML=buildPanel('bullpen');
 document.getElementById('naGrid').innerHTML=buildNA();
-document.getElementById('updatedBadge').innerHTML='Updated: '+fmtShort(META.lastUpdated)+'<span class="updated-sub">Last change: '+fmtShort(META.lastChanged)+'</span>';
+document.getElementById('updatedBadge').textContent='Updated: '+fmtShort(META.lastUpdated);
 
 let calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
 function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
