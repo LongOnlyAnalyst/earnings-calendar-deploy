@@ -46,9 +46,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .footer p{margin:0}
 .footer p+p{margin-top:4px}
 .header-actions{display:flex;align-items:center;gap:12px}
-.export-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-size:0.78rem;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background 0.15s}
-.export-btn:hover{background:rgba(255,255,255,0.22)}
-.export-btn:disabled{opacity:0.6;cursor:default}
+.export-link{background:none;border:none;padding:0;color:#64748b;font:inherit;font-size:0.72rem;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.export-link:hover{color:#1a2332}
+.export-link:disabled{opacity:0.6;cursor:default}
 .view-toggle{display:inline-flex;border:1px solid rgba(255,255,255,0.25);border-radius:8px;overflow:hidden;flex-shrink:0}
 .view-btn{background:rgba(255,255,255,0.12);border:none;color:#cbd5e1;font-size:0.78rem;font-weight:600;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s}
 .view-btn:not(:last-child){border-right:1px solid rgba(255,255,255,0.25)}
@@ -94,10 +94,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <h1>Earnings Calendar</h1>
   <div class="header-actions">
     <div class="view-toggle" role="group" aria-label="View">
-      <button type="button" id="listViewBtn" class="view-btn">List</button>
       <button type="button" id="calViewBtn" class="view-btn active">Calendar</button>
+      <button type="button" id="listViewBtn" class="view-btn">List</button>
     </div>
-    <button id="exportBtn" class="export-btn" onclick="exportChecklist()">Download Checklist (Excel)</button>
     <div id="updatedBadge" class="updated-badge">Updated: —</div>
   </div>
 </div>
@@ -122,6 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
   </div>
   <div class="footer">
+    <p><button type="button" id="exportBtn" class="export-link" onclick="exportChecklist()">Download checklist (Excel)</button></p>
     <p><strong>Confirmed</strong> dates require both date AND time from the company's official IR page or press release only.</p>
     <p>* Results released after market close the prior day. Date and time shown are the conference call.</p>
   </div>
