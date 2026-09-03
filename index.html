@@ -101,6 +101,13 @@ body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--t
 .cal-event.bullpen{background:var(--bp-bg);color:var(--bp);border-left:2px solid var(--bp)}
 .cal-event .t{margin-right:4px}
 .cal-event .tm{font-weight:600;opacity:0.85}
+
+.cal-legend{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 20px;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg2)}
+.cal-legend-item{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted)}
+.cal-legend-swatch{width:14px;height:10px;border-radius:2px;flex-shrink:0}
+.cal-legend-swatch.holdings{background:var(--hold-bg);border-left:2px solid var(--hold)}
+.cal-legend-swatch.watchlist{background:var(--watch-bg);border-left:2px solid var(--watch)}
+.cal-legend-swatch.bullpen{background:var(--bp-bg);border-left:2px solid var(--bp)}
 @media(max-width:900px){
 .panels{grid-template-columns:1fr}
 .page-header{padding:12px 14px;flex-wrap:wrap}
@@ -147,6 +154,11 @@ body{font-family:var(--sans);min-height:100vh;background:var(--bg);color:var(--t
         <button type="button" class="cal-today-btn" id="calToday">Today</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <span class="cal-legend-item"><span class="cal-legend-swatch holdings"></span>Holdings</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch watchlist"></span>Bullpen</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch bullpen"></span>Zane's Bullpen</span>
+      </div>
     </div>
   </div>
   <div class="footer">
