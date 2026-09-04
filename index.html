@@ -263,23 +263,27 @@ function renderCalendar(){
   }
   document.getElementById('calGrid').innerHTML=html;
 }
-function setView(v){
+function isMobileView(){
+  try{return window.matchMedia('(max-width:900px)').matches;}catch(err){return false;}
+}
+function defaultView(){return isMobileView()?'list':'calendar';}
+function setView(v, persist){
   const isCal=v==='calendar';
   document.getElementById('listView').hidden=isCal;
   document.getElementById('calendarView').hidden=!isCal;
   document.getElementById('listViewBtn').classList.toggle('active',!isCal);
   document.getElementById('calViewBtn').classList.toggle('active',isCal);
-  try{localStorage.setItem('earningsViewV2',isCal?'calendar':'list');}catch(err){}
+  if(persist){try{localStorage.setItem('earningsViewV3',isCal?'calendar':'list');}catch(err){}}
   if(isCal) renderCalendar();
 }
-document.getElementById('listViewBtn').addEventListener('click',()=>setView('list'));
-document.getElementById('calViewBtn').addEventListener('click',()=>setView('calendar'));
+document.getElementById('listViewBtn').addEventListener('click',()=>setView('list',true));
+document.getElementById('calViewBtn').addEventListener('click',()=>setView('calendar',true));
 document.getElementById('calPrev').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);renderCalendar();});
 document.getElementById('calNext').addEventListener('click',()=>{calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);renderCalendar();});
 document.getElementById('calToday').addEventListener('click',()=>{calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);renderCalendar();});
-let savedView='calendar';
-try{savedView=localStorage.getItem('earningsViewV2')||'calendar';}catch(err){}
-setView(savedView==='list'?'list':'calendar');
+let savedView=null;
+try{savedView=localStorage.getItem('earningsViewV3');}catch(err){}
+setView(savedView==='list'||savedView==='calendar'?savedView:defaultView(), false);
 
 function loadExcelJS(){
   if(window.ExcelJS) return Promise.resolve();
