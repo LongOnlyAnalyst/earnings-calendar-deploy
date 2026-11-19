@@ -178,7 +178,7 @@ const EARNINGS = [
   { cat:'holdings', ticker:'AAPL', co:'Apple', date:'2026-11-02', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q4 FY26 · Earnings release after market close · IR' },
   { cat:'holdings', ticker:'AMZN', co:'Amazon', date:'2026-10-29', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings release after market close · PR' },
   { cat:'holdings', ticker:'RKT', co:'Rocket Companies', date:'2026-10-29', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings release after market close · PR' },
-  { cat:'holdings', ticker:'CPRT', co:'Copart', date:'2026-09-10', timeCT:'4:30 PM', sess:'AMC', status:'confirmed', notes:'Q4 FY26 · Earnings release after market close · PR' },
+  { cat:'holdings', ticker:'CPRT', co:'Copart', date:'2026-12-01', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Q1 FY27 · Earnings release before market open · PR', isNew:true },
   { cat:'holdings', ticker:'COST', co:'Costco', date:'2026-12-10', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q1 FY27 · Earnings release after market close · IR' },
   { cat:'holdings', ticker:'HEI', co:'HEICO', date:'2026-08-26', timeCT:'8:00 AM', sess:'BMO', status:'confirmed', notes:'Q3 FY26 · IR', split:true },
   { cat:'holdings', ticker:'SBUX', co:'Starbucks', date:'2026-10-29', timeCT:'3:15 PM', sess:'AMC', status:'confirmed', notes:'Q4 FY26 · Earnings release after market close · PR' },
@@ -189,8 +189,8 @@ const EARNINGS = [
   { cat:'bullpen', ticker:'DASH', co:'DoorDash', date:'2026-11-04', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings release after market close · PR' },
   { cat:'bullpen', ticker:'MELI', co:'MercadoLibre', date:'2026-11-04', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings call after market close · PR' },
   { cat:'bullpen', ticker:'SPCX', co:'SpaceX', date:'2026-10-20', timeCT:'3:30 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings release after market close · IR' },
-  { cat:'bullpen', ticker:'AVGO', co:'Broadcom', date:'2026-12-09', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q4 FY26 · Earnings release after market close · PR', isNew:true },
-  { cat:'watchlist', ticker:'JPM', co:'JPMorgan Chase', date:'2026-10-13', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Q3 2026 · Earnings release before market open · IR' },
+  { cat:'bullpen', ticker:'AVGO', co:'Broadcom', date:'2026-12-09', timeCT:'4:00 PM', sess:'AMC', status:'confirmed', notes:'Q4 FY26 · Earnings release after market close · PR' },
+  { cat:'watchlist', ticker:'JPM', co:'JPMorgan Chase', date:'2027-01-14', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Q4 2026 · Earnings release before market open · PR', isNew:true },
   { cat:'watchlist', ticker:'WFC', co:'Wells Fargo', date:'2026-10-13', timeCT:'9:00 AM', sess:'', status:'confirmed', notes:'Q3 2026 · Earnings conference call · IR' },
   { cat:'watchlist', ticker:'NFLX', co:'Netflix', date:'2026-10-20', timeCT:'3:45 PM', sess:'AMC', status:'confirmed', notes:'Q3 2026 · Earnings release after market close · PR' },
   { cat:'watchlist', ticker:'SCHW', co:'Charles Schwab', date:'2026-10-15', timeCT:'7:30 AM', sess:'BMO', status:'confirmed', notes:'Q3 2026 · Earnings release before market open · PR' },
@@ -204,7 +204,7 @@ const EARNINGS = [
   { cat:'watchlist', ticker:'BRK-B', co:'Berkshire Hathaway', date:'', timeCT:'', sess:'', status:'not-announced', notes:'' },
   { cat:'watchlist', ticker:'SPOT', co:'Spotify Technology', date:'2026-10-22', timeCT:'7:00 AM', sess:'BMO', status:'confirmed', notes:'Q3 2026 · Earnings release before market open · PR' }
 ];
-const META = { lastUpdated: '2026-11-09', lastChanged: '2026-11-09' };
+const META = { lastUpdated: '2026-11-19', lastChanged: '2026-11-19' };
 
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
 const STALE=new Date(TODAY.getTime()-7*24*60*60*1000);
